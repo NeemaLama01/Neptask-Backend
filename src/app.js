@@ -9,6 +9,8 @@ const app = express();
 const authRoute = require("./routes/auth");
 const taskRoute = require("./routes/task");
 
+
+
 // middleware
 app.use(express.json());
 app.use(cors());
@@ -18,5 +20,6 @@ app.use("/", authRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
+
 
 app.listen(3000);

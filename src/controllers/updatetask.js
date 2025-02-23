@@ -6,30 +6,28 @@ const updateTask = (req, res) => {
     taskTitle,
     taskInfo,
     taskType,
-    taskStage,
-    requirement,
     priceRange,
+    requirement,
     status,
   } = req.body;
 
   // Ensure all required fields are present
-  if (!taskTitle || !taskInfo || !taskType || !taskStage || !requirement || !priceRange || status === undefined) {
+  if (!taskTitle || !taskInfo || !taskType || !priceRange || !requirement || status === undefined) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
   // SQL Query
   const updateQuery = `
     UPDATE tasklisting 
-    SET taskTitle = ?, taskInfo = ?, taskType = ?, taskStage = ?, requirements = ?, priceRange = ?, status = ?
+    SET taskTitle = ?, taskInfo = ?, taskType = ?, priceRange = ?, requirements = ?, status = ?
     WHERE id = ?`;
 
   const values = [
     taskTitle,
     taskInfo,
     taskType,
-    taskStage,
-    requirement,
     priceRange,
+    requirement,
     status,
     taskId,
   ];

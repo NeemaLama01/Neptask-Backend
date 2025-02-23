@@ -8,14 +8,13 @@ const createTask = async (req, res) => {
       taskTitle,
       taskInfo,
       taskType,
-      taskStage,
-      requirement,
       priceRange,
+      requirement,
       status = false, // Default status to false if not provided
     } = req.body;
 
     // Validate required fields
-    if (!userId || !taskTitle || !taskInfo || !taskType || !taskStage) {
+    if (!userId || !taskTitle || !taskInfo || !taskType || !priceRange) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -25,8 +24,8 @@ const createTask = async (req, res) => {
     // SQL Query
     const insertQuery = `
       INSERT INTO tasklisting 
-      (userId, id, taskTitle, taskInfo, taskType, taskStage, requirements, priceRange, status) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      (userId, id, taskTitle, taskInfo, taskType, priceRange, requirements, status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [
       userId,
@@ -34,9 +33,8 @@ const createTask = async (req, res) => {
       taskTitle,
       taskInfo,
       taskType,
-      taskStage,
-      requirement,
       priceRange,
+      requirement,
       status,
     ];
 

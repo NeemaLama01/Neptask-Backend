@@ -8,8 +8,8 @@ const getArchiveTask = async (req, res) => {
     let selectQuery = "SELECT * FROM tasklisting WHERE status = 0";
     let queryParams = [];
 
-      selectQuery += " AND userId = ?";
-      queryParams.push(userId);
+    selectQuery += " AND userId = ?";
+    queryParams.push(userId);
 
     // If a search query exists, add conditions safely using placeholders
     if (query) {
@@ -29,6 +29,10 @@ const getArchiveTask = async (req, res) => {
         return res.status(404).json({ message: "No archived tasks found" });
       }
 
+      // Log the result to the console
+      console.log("Archived Tasks:", JSON.stringify(result, null, 2));
+
+      // Send the result as the response
       res.status(200).json(result);
     });
   } catch (error) {

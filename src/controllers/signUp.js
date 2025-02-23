@@ -38,7 +38,7 @@ const signUp = async (req, res) => {
       await conn.query(sqltasker, valuestasker);
     }
     if (selectedOption === "Task Poster") {
-      const sqlTaskPoster = "INSERT INTO Task Poster_info (id, name, email) VALUES (?, ?, ?)";
+      const sqlTaskPoster = "INSERT INTO taskposter_info (id, name, email) VALUES (?, ?, ?)";
       const valuesTaskPoster = [userId, fullName, email];
       await conn.query(sqlTaskPoster, valuesTaskPoster);
     }

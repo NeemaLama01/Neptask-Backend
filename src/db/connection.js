@@ -43,13 +43,13 @@ con.connect((err) => {
         console.log('Table "Users" created or exists');
 
         con.query(`CREATE TABLE IF NOT EXISTS tasklisting (
+          userId VARCHAR(255) NOT NULL,
           id VARCHAR(255) NOT NULL PRIMARY KEY,  -- Added PRIMARY KEY
           taskTitle VARCHAR(255) NOT NULL,
           taskInfo TEXT NOT NULL,
           taskType VARCHAR(255) NOT NULL,
-          taskStage VARCHAR(255) NOT NULL,
-          requirements VARCHAR(255) NOT NULL,
           priceRange VARCHAR(255) NOT NULL,
+          requirements VARCHAR(255) NOT NULL,
           status VARCHAR(255) NOT NULL
         )`, (err) => {
           if (err) {
@@ -101,6 +101,48 @@ con.connect((err) => {
                     throw err;
                   }
                   console.log('Table "tasker_task" created or exists');
+
+                con.query(`CREATE TABLE IF NOT EXISTS accepted_task (
+                    taskId VARCHAR(255),
+                    taskerId VARCHAR(255),
+                    status boolean,
+                    rejectionReason TEXT
+                  )`, (err) => {
+                    if (err) {
+                      console.error('Error creating accepted_task table:', err);
+                      throw err;
+                    }
+                    console.log('Table "accepted_task" created or exists');
+                 
+
+                  // Creating the Conversation table
+              con.query(`CREATE TABLE IF NOT EXISTS Conversation (
+                  conversationId INT AUTO_INCREMENT PRIMARY KEY,
+                  members JSON NOT NULL
+                  )`, (err) => {
+                    if (err) {
+                        console.error('Error creating Conversation table:', err);
+                        throw err;
+                    }
+                    console.log('Table "Conversation" created or exists');
+
+                // Creating the Message table
+                con.query(`CREATE TABLE IF NOT EXISTS Message (
+                    id VARCHAR(255) NOT NULL PRIMARY KEY,
+                    conversationId INT NOT NULL,  -- Changed to INT for consistency
+                    senderId VARCHAR(255) NOT NULL,
+                    message TEXT NOT NULL,
+                    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (conversationId) REFERENCES Conversation(conversationId) -- foreign key reference
+                )`, (err) => {
+                    if (err) {
+                        console.error('Error creating Message table:', err);
+                        throw err;
+                    }
+                    console.log('Table "Message" created or exists');
+                   });
+                  });
+                 });
                 });
               });
             });
@@ -108,7 +150,8 @@ con.connect((err) => {
         });
       });
     });
+    });
   });
-});
+
 
 module.exports = con;

@@ -12,3 +12,4 @@ router.route("/authentication").post(verifyToken); // Add the new route
 router.route("/verify-token").post(verify);
 
 module.exports = router;
+

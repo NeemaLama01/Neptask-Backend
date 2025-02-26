@@ -113,7 +113,22 @@ con.connect((err) => {
                       throw err;
                     }
                     console.log('Table "accepted_task" created or exists');
-                 
+
+                    con.query(`CREATE TABLE IF NOT EXISTS paymentintegration (
+                          PaymentId VARCHAR(255) PRIMARY KEY,
+                          taskposter VARCHAR(255),
+                          email VARCHAR(255),
+                          phone VARCHAR(20),
+                          task TEXT,
+                          payment VARCHAR(50),
+                          status VARCHAR(50) DEFAULT 'Pending'
+                    )`, (err) => {
+                      if (err) {
+                          console.error('Error creating PaymentIntegration table:', err);
+                          throw err;
+                      }
+                      console.log('Table "PaymentIntegration" created or already exists');
+                  
 
                   // Creating the Conversation table
               con.query(`CREATE TABLE IF NOT EXISTS Conversation (
@@ -140,6 +155,7 @@ con.connect((err) => {
                         throw err;
                     }
                     console.log('Table "Message" created or exists');
+                  });
                    });
                   });
                  });

@@ -17,7 +17,7 @@ const acceptedTask = async (req, res) => {
       }
 
       if (appliedResults.length === 0) {
-        return res.status(404).json({ message: "No applied tasks found" });
+        return res.status(404).json({ message: "No task accepted" });
       }
 
       // Extract task IDs and store statuses in a map

@@ -18,8 +18,12 @@ const getTasker = async (req, res) => {
   }
 
   try {
-    // Fetch tasker IDs associated with the task
-    const selectQuery = "SELECT taskerID FROM posted_task WHERE taskID = ?";
+    // Fetch tasker IDs, offerPrice, and comment associated with the task
+    const selectQuery = `
+      SELECT taskerID, offerPrice, comments 
+      FROM applied_task 
+      WHERE taskID = ?`;
+    
     const postedTaskers = await query(selectQuery, [taskId]);
 
     if (!postedTaskers || postedTaskers.length === 0) {
@@ -39,18 +43,21 @@ const getTasker = async (req, res) => {
       return res.status(200).json({ taskers: [] });
     }
 
-    // Fetch tasker details along with status from accepted_tasks
+    // Fetch tasker details along with offerPrice, comment, and status from accepted_tasks
     const taskerQuery = `
       SELECT 
         t.id, 
         t.name, 
         t.email, 
-        COALESCE(a.status, NULL) AS status
+        COALESCE(a.status, NULL) AS status,
+        at.offerPrice,
+        at.comments
       FROM tasker_info t
       LEFT JOIN accepted_task a ON t.id = a.taskerId AND a.taskId = ?
+      LEFT JOIN applied_task at ON t.id = at.taskerID AND at.taskID = ?
       WHERE t.id IN (?)`;
 
-    const taskerDetails = await query(taskerQuery, [taskId, taskerIDs]);
+    const taskerDetails = await query(taskerQuery, [taskId, taskId, taskerIDs]);
 
     res.status(200).json({ taskers: taskerDetails });
   } catch (error) {

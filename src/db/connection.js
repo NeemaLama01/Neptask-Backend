@@ -81,16 +81,18 @@ con.connect((err) => {
               }
               console.log('Table "tasker_info" created or exists');
 
-              con.query(`CREATE TABLE IF NOT EXISTS posted_task (
+              con.query(`CREATE TABLE IF NOT EXISTS applied_task (
                 taskID VARCHAR(255) NOT NULL,  -- Removed PRIMARY KEY.  A tasker can apply to multiple tasks.
                 taskerID VARCHAR(255) NOT NULL, -- Added taskerID
-                PRIMARY KEY (taskID, taskerID)      -- Composite Primary Key
+                PRIMARY KEY (taskID, taskerID),      -- Composite Primary Key
+                offerPrice DECIMAL(10,2) NOT NULL, 
+                comment TEXT NOT NULL
               )`, (err) => {
                 if (err) {
-                  console.error('Error creating posted_task table:', err);
+                  console.error('Error creating applied_task table:', err);
                   throw err;
                 }
-                console.log('Table "posted_task" created or exists');
+                console.log('Table "applied_task" created or exists');
 
                 con.query(`CREATE TABLE IF NOT EXISTS tasker_task (
                   taskerId VARCHAR(255) PRIMARY KEY,

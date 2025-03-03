@@ -18,7 +18,6 @@ const {pendingTask} = require("../controllers/pendingtask");
 
 
 
-
 router.route("/create-task").post(createTask);
 router.route("/get-All-Task").get(getAllTask);
 router.route("/show-task/:id").get(getTaskById);

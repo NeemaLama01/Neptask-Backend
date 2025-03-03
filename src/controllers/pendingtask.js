@@ -9,26 +9,30 @@ const pendingTask = async (req, res) => {
     }
 
     // Step 1: Get applied task IDs for the given user (Use JSON_CONTAINS here)
-    const appliedQuery = "SELECT taskID FROM applied_task WHERE JSON_CONTAINS(taskerID, ?)";
-    conn.query(appliedQuery, [`"${userId}"`], (err, appliedResults) => {
+    const appliedQuery = "SELECT taskID FROM applied_task WHERE taskerID = ?";
+   conn.query(appliedQuery, [userId], (err, appliedResults) => {
+ 
+    //conn.query(appliedQuery, [`"${userId}"`], (err, appliedResults) => {
       if (err) {
         console.error("Error fetching applied tasks:", err);
         return res.status(500).json({ error: "Error fetching applied tasks" });
       }
 
       if (appliedResults.length === 0) {
+        console.log("No tasks found for user:", userId);
         return res.status(404).json({ message: "No applied tasks found" });
       }
 
       // Extract task IDs
       const taskIDs = appliedResults.map(row => row.taskID);
 
-      // 🔴 Handle empty taskIDs case
+      // Handle empty taskIDs case
       if (taskIDs.length === 0) {
+        console.log("No tasks found for user:", userId);
         return res.status(404).json({ message: "No matching tasks found" });
       }
 
-      // 🔥 Dynamically construct the placeholders for IN clause
+      // Dynamically construct the placeholders for IN clause
       const placeholders = taskIDs.map(() => "?").join(",");
 
       // Step 2: Get task details from tasklisting & status from accepted_task
@@ -57,6 +61,10 @@ const pendingTask = async (req, res) => {
         queryParams.push(searchPattern, searchPattern);
       }
 
+      // Debugging: Log the query and parameters
+      console.log("Executing Query:", selectQuery);
+      console.log("Query Parameters:", queryParams);
+
       conn.query(selectQuery, queryParams, (err, result) => {
         if (err) {
           console.error("Error fetching tasks:", err);
@@ -64,9 +72,10 @@ const pendingTask = async (req, res) => {
         }
 
         if (result.length === 0) {
+          console.log("No tasks found for user:", userId);
           return res.status(404).json({ message: "No matching tasks found" });
         }
-        
+
         console.log("✅ Final Data:", JSON.stringify(result, null, 2));
         res.status(200).json(result);
       });

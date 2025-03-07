@@ -117,6 +117,17 @@ con.connect((err) => {
                     }
                     console.log('Table "accepted_task" created or exists');
 
+                    con.query(`CREATE TABLE IF NOT EXISTS user_friends (
+                      userId VARCHAR(255) NOT NULL,  
+                      friendId VARCHAR(255) NOT NULL,
+                      PRIMARY KEY (userID, friendID)      
+                    )`, (err) => {
+                      if (err) {
+                        console.error('Error creating user_friends table:', err);
+                        throw err;
+                      }
+                      console.log('Table "user_friends" created or exists');
+
                     con.query(`CREATE TABLE IF NOT EXISTS paymentintegration (
                           PaymentId VARCHAR(255) PRIMARY KEY,
                           taskposter VARCHAR(255),
@@ -171,6 +182,6 @@ con.connect((err) => {
     });
     });
   });
-
+});
 
 module.exports = con;

@@ -37,7 +37,7 @@ const Payment = (req, res) => {
             "product_code": "EPAYTEST",
             "signature": signature,
             "signed_field_names": "total_amount,transaction_uuid,product_code",
-            "success_url": `http://localhost:5174/success?transaction_uuid=${transaction_uuid}`,  // Pass transaction_uuid
+            "success_url": `http://localhost:5174/escrow?transaction_uuid=${transaction_uuid}`,  // Pass transaction_uuid
             "tax_amount": "0",
             "total_amount": total,
             "transaction_uuid": transaction_uuid

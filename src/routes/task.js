@@ -14,8 +14,10 @@ const {acceptedTask} = require("../controllers/acceptedtask");
 const {acceptedTasker} = require("../controllers/acceptedtasker");
 const {commentTask} = require("../controllers/commenttask");
 const {pendingTask} = require("../controllers/pendingtask");
-
-
+const {getAllusers} = require("../controllers/getusers");
+const {getFriend} = require("../controllers/getfriend");
+const {friendReq} = require("../controllers/friendreq");
+const {checkFriendStatus} = require("../controllers/checkfriend");
 
 
 router.route("/create-task").post(createTask);
@@ -32,6 +34,9 @@ router.route("/accepted-tasks").get(acceptedTask);
 router.route("/accepted-tasker").get(acceptedTasker);
 router.route("/comment").put(commentTask);
 router.route("/pending-task").get(pendingTask);
-
+router.route("/getUsers").get(getAllusers);
+router.route("/getFriend").get(getFriend);
+router.route("/friendReq").post(friendReq);
+router.route("/checkFriendStatus").get(checkFriendStatus);
 
 module.exports = router;

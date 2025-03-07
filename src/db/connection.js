@@ -34,6 +34,7 @@ con.connect((err) => {
         email VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
         role VARCHAR(255) NOT NULL,
+        profile_image VARCHAR(255) NOT NULL,
         token VARCHAR(255) NOT NULL
       )`, (err) => {
         if (err) {

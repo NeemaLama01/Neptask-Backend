@@ -12,7 +12,7 @@ const acceptedTask = async (req, res) => {
     const appliedQuery = "SELECT taskId, status FROM accepted_task WHERE taskerId = ?";
     conn.query(appliedQuery, [userId], (err, appliedResults) => {
       if (err) {
-        console.error("❌ Error fetching applied tasks:", err);
+        console.error(" Error fetching applied tasks:", err);
         return res.status(500).json({ error: "Error fetching applied tasks" });
       }
 
@@ -27,10 +27,10 @@ const acceptedTask = async (req, res) => {
         return row.taskId;
       });
 
-      // 🔥 Dynamically construct the placeholders for IN clause
+      //  Dynamically construct the placeholders for IN clause
       const placeholders = taskIDs.map(() => "?").join(",");
 
-      // 🔹 Step 2: Get task details from tasklisting
+      //  Step 2: Get task details from tasklisting
       let selectQuery = `
         SELECT 
           il.id, 
@@ -45,7 +45,7 @@ const acceptedTask = async (req, res) => {
 
       let queryParams = [...taskIDs];
 
-      // 🔹 Step 3: Apply search filter if query exists
+      //  Step 3: Apply search filter if query exists
       if (query) {
         selectQuery += " AND (il.taskTitle LIKE ? OR il.taskType LIKE ?)";
         const searchPattern = `%${query}%`;
@@ -54,7 +54,7 @@ const acceptedTask = async (req, res) => {
 
       conn.query(selectQuery, queryParams, (err, result) => {
         if (err) {
-          console.error("❌ Error fetching tasks:", err);
+          console.error(" Error fetching tasks:", err);
           return res.status(500).json({ error: "Error fetching tasks from database" });
         }
 
@@ -72,7 +72,7 @@ const acceptedTask = async (req, res) => {
       });
     });
   } catch (error) {
-    console.error("❌ Error:", error);
+    console.error(" Error:", error);
     res.status(500).json({ error: "Error occurred while processing the request" });
   }
 };

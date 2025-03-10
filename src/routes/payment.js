@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const { Payment } = require("../controllers/payment");
 const {verifyEsewaPayment} = require("../controllers/verifypayment");
-// const { paymentSuccess } = require("../controllers/paymentSuccess");
+const {getPayments} = require("../controllers/paymentpage");
 
 
 router.route("/payment").post(Payment);
 router.route("/verify-payment").post(verifyEsewaPayment);
-// router.route("/payment/success").get(paymentSuccess);
+router.route("/getPayments").get(getPayments);
 
 module.exports = router;

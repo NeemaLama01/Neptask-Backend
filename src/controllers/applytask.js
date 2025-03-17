@@ -1,7 +1,7 @@
 const conn = require("../db/connection");
 
 const applyTask = async (req, res) => {
-  const { taskId, taskerId, offerPrice, comments } = req.body;
+  const { taskId, taskerId, offerPrice, comments,tasker } = req.body;
 
   try {
     // Check if the tasker already applied for this task
@@ -19,11 +19,11 @@ const applyTask = async (req, res) => {
 
       // Insert new application with offerPrice and comment
       const insertQuery = `
-        INSERT INTO applied_task (taskId, taskerId, offerPrice, comments)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO applied_task (taskId, taskerId, offerPrice, comments,tasker)
+        VALUES (?, ?, ?, ?, ?)
       `;
 
-      conn.query(insertQuery, [taskId, taskerId, offerPrice, comments], (insertErr) => {
+      conn.query(insertQuery, [taskId, taskerId, offerPrice, comments,tasker], (insertErr) => {
         if (insertErr) {
           console.error("Error inserting task in db:", insertErr);
           return res.status(500).json({ message: "Error inserting task in database" });

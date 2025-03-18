@@ -87,7 +87,8 @@ con.connect((err) => {
                 taskerID VARCHAR(255) NOT NULL, -- Added taskerID
                 PRIMARY KEY (taskID, taskerID),      -- Composite Primary Key
                 offerPrice DECIMAL(10,2) NOT NULL, 
-                comment TEXT NOT NULL
+                comment TEXT NOT NULL,
+                tasker VARCHAR(255)
               )`, (err) => {
                 if (err) {
                   console.error('Error creating applied_task table:', err);

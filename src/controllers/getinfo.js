@@ -2,12 +2,13 @@ const conn = require("../db/connection"); // Ensure correct database connection
 
 // API to get additional task details based on task_name
 const getinfo = async (req, res) => {
-  const { task } = req.query; // Use req.query instead of req.params
+  const { task, taskposter } = req.query; // Using req.query
 
-  console.log(`Received task: ${task}`); // Debugging log
+  console.log(`Received task: ${task}, Task Poster: ${taskposter}`); // Debugging log
 
-  if (!task) {
-    return res.status(400).json({ error: "Task name is required" });
+  // Validate input
+  if (!task || !taskposter) {
+    return res.status(400).json({ error: "Task name and Task poster are required" });
   }
 
   const query = `
@@ -17,10 +18,10 @@ const getinfo = async (req, res) => {
     FROM paymentintegration AS pi
     JOIN tasklisting AS tl ON pi.task = tl.taskTitle
     JOIN applied_task AS at ON tl.id = at.taskID
-    WHERE pi.task = ?;
+    WHERE pi.task = ? AND pi.taskposter = ?;
   `;
 
-  conn.query(query, [task], (err, results) => {  
+  conn.query(query, [task, taskposter], (err, results) => {
     if (err) {
       console.error("Database Query Error:", err);
       return res.status(500).json({ error: "Internal Server Error" });

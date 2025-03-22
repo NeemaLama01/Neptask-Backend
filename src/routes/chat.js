@@ -1,13 +1,12 @@
 const express = require("express");
-const app = express();  // Fixed: Call express()
-const http = require('http').createServer(app);
+const { createRoom, getChatRooms } = require("../controllers/chatController");
 
-const PORT = process.env.PORT || 3000;
+const router = express.Router();
 
-http.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-});
+// Create a chat room (or return existing one)
+router.post("/create-room", createRoom);
 
-app.get('/chat', (req, res) => {
-    res.sendFile(__dirname + '/index.html');  
-});
+// Get chat rooms for a user (with last messages)
+router.get("/:userId", getChatRooms);
+
+module.exports = router;

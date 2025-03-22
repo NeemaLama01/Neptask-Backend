@@ -145,31 +145,46 @@ con.connect((err) => {
                       console.log('Table "PaymentIntegration" created or already exists');
                   
 
-                  // Creating the Conversation table
-              con.query(`CREATE TABLE IF NOT EXISTS Conversation (
-                  conversationId INT AUTO_INCREMENT PRIMARY KEY,
-                  members JSON NOT NULL
-                  )`, (err) => {
-                    if (err) {
-                        console.error('Error creating Conversation table:', err);
+                   // Create chat_rooms table (must be created before messages)
+                   con.query(
+                    `CREATE TABLE IF NOT EXISTS chat_rooms (
+                      id INT AUTO_INCREMENT PRIMARY KEY,
+                      roomId VARCHAR(255) NOT NULL UNIQUE,
+                      user1 VARCHAR(255) NOT NULL,
+                      user2 VARCHAR(255) NOT NULL,
+                      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                      FOREIGN KEY (user1) REFERENCES Users(userId) ON DELETE CASCADE,
+                      FOREIGN KEY (user2) REFERENCES Users(userId) ON DELETE CASCADE
+                    )`,
+                    (err) => {
+                      if (err) {
+                        console.error("Error creating chat_rooms table:", err);
                         throw err;
-                    }
-                    console.log('Table "Conversation" created or exists');
+                      }
+                      console.log('Table "chat_rooms" created or exists');
 
-                // Creating the Message table
-                con.query(`CREATE TABLE IF NOT EXISTS Message (
-                    id VARCHAR(255) NOT NULL PRIMARY KEY,
-                    conversationId INT NOT NULL,  -- Changed to INT for consistency
-                    senderId VARCHAR(255) NOT NULL,
-                    message TEXT NOT NULL,
-                    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (conversationId) REFERENCES Conversation(conversationId) -- foreign key reference
-                )`, (err) => {
-                    if (err) {
-                        console.error('Error creating Message table:', err);
-                        throw err;
-                    }
-                    console.log('Table "Message" created or exists');
+                      //  Create messages table (depends on chat_rooms and Users)
+                      con.query(
+                        `CREATE TABLE IF NOT EXISTS messages (
+                          id VARCHAR(255) PRIMARY KEY,
+                          roomId VARCHAR(255) NOT NULL,
+                          sender VARCHAR(255) NOT NULL,
+                          receiver VARCHAR(255) NOT NULL,
+                          message TEXT NOT NULL,
+                          readAt DATETIME DEFAULT NULL,
+                          createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                          FOREIGN KEY (roomId) REFERENCES chat_rooms(roomId) ON DELETE CASCADE,
+                          FOREIGN KEY (sender) REFERENCES Users(userId) ON DELETE CASCADE,
+                          FOREIGN KEY (receiver) REFERENCES Users(userId) ON DELETE CASCADE
+                        )`,
+                        (err) => {
+                          if (err) {
+                            console.error("Error creating messages table:", err);
+                            throw err;
+                          }
+                          console.log('Table "messages" created or exists');
+                        });
                   });
                    });
                   });
@@ -183,6 +198,6 @@ con.connect((err) => {
     });
     });
   });
-});
+
 
 module.exports = con;

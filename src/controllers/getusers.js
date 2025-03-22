@@ -5,9 +5,9 @@ const getAllusers = async (req, res) => {
     // Extracting search query and userId from request
     const { query } = req.query;
     const userId = req.headers.userid; // Get userId from request headers
-
+   
     let selectQuery = "SELECT * FROM users WHERE userId != ?"; // Exclude current user
-
+ 
     // If there's a search query, apply filters
     if (query) {
       selectQuery += ` AND (username LIKE '%${query}%' OR role LIKE '%${query}%')`;

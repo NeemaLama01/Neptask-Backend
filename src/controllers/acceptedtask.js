@@ -9,7 +9,7 @@ const acceptedTask = async (req, res) => {
     }
 
     // 🔹 Step 1: Get applied task IDs & their status for the given user
-    const appliedQuery = "SELECT taskId, status FROM accepted_task WHERE taskerId = ?";
+    const appliedQuery = "SELECT taskId, status,rejectionReason FROM accepted_task WHERE taskerId = ?";
     conn.query(appliedQuery, [userId], (err, appliedResults) => {
       if (err) {
         console.error(" Error fetching applied tasks:", err);
@@ -22,10 +22,13 @@ const acceptedTask = async (req, res) => {
 
       // Extract task IDs and store statuses in a map
       const taskStatusMap = new Map();
+      const taskrejectionMap =new Map();
       const taskIDs = appliedResults.map(row => {
-        taskStatusMap.set(row.taskId, row.status); // Store status for each taskId
+        taskStatusMap.set(row.taskId, row.status);
+        taskrejectionMap.set(row.taskId,row.rejectionReason); // Store status for each taskId
         return row.taskId;
       });
+      
 
       //  Dynamically construct the placeholders for IN clause
       const placeholders = taskIDs.map(() => "?").join(",");
@@ -65,7 +68,8 @@ const acceptedTask = async (req, res) => {
         // 🔹 Step 4: Attach the status from Step 1 to the final result
         const finalResult = result.map(task => ({
           ...task,
-          acceptedStatus: taskStatusMap.get(task.id), // Attach status from Map
+          acceptedStatus: taskStatusMap.get(task.id),
+          reason:taskrejectionMap.get(task.id), // Attach status from Map
         }));
 
         res.status(200).json(finalResult);

@@ -5,7 +5,7 @@ const getAllTask = async (req, res) => {
     // Extracting search query from request query parameters
     const { query } = req.query;
 
-    let selectQuery = "SELECT * FROM tasklisting WHERE status = 1";
+    let selectQuery = "SELECT * FROM tasklisting WHERE status = 1 OR status = true";
 
     // If there's a search query, apply it within the correct condition
     if (query) {
@@ -20,6 +20,7 @@ const getAllTask = async (req, res) => {
         if (result.length === 0) {
           res.status(404).send("Job not found");
         } else {
+          console.log(result)
           res.status(200).send(result);
         }
       }

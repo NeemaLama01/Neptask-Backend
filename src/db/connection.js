@@ -50,6 +50,7 @@ con.connect((err) => {
           taskInfo TEXT NOT NULL,
           taskType VARCHAR(255) NOT NULL,
           priceRange VARCHAR(255) NOT NULL,
+          image VARCHAR(255) NOT NULL,
           requirements VARCHAR(255) NOT NULL,
           status VARCHAR(255) NOT NULL
         )`, (err) => {

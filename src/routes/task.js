@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { createTask } = require("../controllers/createtask");
+const { createTask, upload } = require("../controllers/createtask");
 const { getAllTask  } = require("../controllers/showAlltask");
 const { getTaskById } = require("../controllers/showtask");
 const { applyTask  } = require("../controllers/applytask");
@@ -20,7 +20,7 @@ const {friendReq} = require("../controllers/friendreq");
 const {checkFriendStatus} = require("../controllers/checkfriend");
 
 
-router.route("/create-task").post(createTask);
+router.route("/create-task").post(upload.single("image"), createTask);
 router.route("/get-All-Task").get(getAllTask);
 router.route("/show-task/:id").get(getTaskById);
 //router.route("/post-task").post(postTask);

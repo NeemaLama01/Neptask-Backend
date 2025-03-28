@@ -185,6 +185,23 @@ con.connect((err) => {
                             throw err;
                           }
                           console.log('Table "messages" created or exists');
+
+                          con.query(`CREATE TABLE reviews (
+                            id VARCHAR(255) PRIMARY KEY,
+                            task_id INT NOT NULL,
+                            reviewer_id INT NOT NULL,
+                            reviewee_id INT NOT NULL,
+                            rating FLOAT CHECK (rating BETWEEN 1 AND 5),
+                            review TEXT,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        )`,
+                        (err) => {
+                          if (err) {
+                            console.error("Error creating reviews table:", err);
+                            throw err;
+                          }
+                          console.log('Table "reviews" created or exists');
+                          });
                         });
                   });
                    });

@@ -17,6 +17,8 @@ const imageRoute = require("./routes/image");
 const chatRoutes = require("./routes/chat");
 const messageRoutes = require("./routes/message");
 
+const reviewRoutes=require("./routes/review");
+
 const db = require("./db/connection");
 
 const app = express();
@@ -38,6 +40,7 @@ app.use("/", payRoute);
 app.use("/", imageRoute); // Updated path for clarity
 app.use("/chat", chatRoutes);
 app.use("/messages", messageRoutes);
+app.use("/",reviewRoutes)
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 

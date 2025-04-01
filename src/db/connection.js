@@ -186,11 +186,11 @@ con.connect((err) => {
                           }
                           console.log('Table "messages" created or exists');
 
-                          con.query(`CREATE TABLE reviews (
+                          con.query(`CREATE TABLE  IF NOT EXISTS reviews (
                             id VARCHAR(255) PRIMARY KEY,
-                            task_id INT NOT NULL,
-                            reviewer_id INT NOT NULL,
-                            reviewee_id INT NOT NULL,
+                            task_id VARCHAR(255) NOT NULL,
+                            reviewer_id VARCHAR(255) NOT NULL,
+                            reviewee_id VARCHAR(255) NOT NULL,
                             rating FLOAT CHECK (rating BETWEEN 1 AND 5),
                             review TEXT,
                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

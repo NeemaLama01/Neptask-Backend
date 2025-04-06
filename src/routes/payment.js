@@ -6,7 +6,7 @@ const {getPayments} = require("../controllers/paymentpage");
 const {getinfo} = require("../controllers/getinfo");
 const{updatePaymentStatus}=require("../controllers/updatepay.js");
 const {taskerpayment} = require("../controllers/taskerpaymentpage.js");
-
+const {adminPayment} = require("../controllers/adminpayment.js");
 
 router.route("/payment").post(Payment);
 router.route("/verify-payment").post(verifyEsewaPayment);
@@ -14,6 +14,6 @@ router.route("/getPayments").get(getPayments);
 router.route("/getinfo").get(getinfo);
 router.route("/updatepaymentstatus").put(updatePaymentStatus);
 router.route("/taskerpayment").get(taskerpayment);
-
+router.route("/adminpayment").get(adminPayment);
 
 module.exports = router;

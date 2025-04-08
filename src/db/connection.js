@@ -52,7 +52,10 @@ con.connect((err) => {
           priceRange VARCHAR(255) NOT NULL,
           image VARCHAR(255) NOT NULL,
           requirements VARCHAR(255) NOT NULL,
-          status VARCHAR(255) NOT NULL
+          status VARCHAR(255) NOT NULL,
+          admin_approval tinyint NULL,
+          rejection_reason text NULL
+
         )`, (err) => {
           if (err) {
             console.error('Error creating tasklisting table:', err);

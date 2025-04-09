@@ -6,7 +6,7 @@ const getActiveTask = async (req, res) => {
     const { query, userId } = req.query;
 
     // Ensure userId is present, or return all active tasks (if allowed)
-    let selectQuery = "SELECT * FROM tasklisting WHERE status = 1";
+    let selectQuery = "SELECT * FROM tasklisting WHERE status = 1 AND admin_approval = 1";
     let queryParams = [];
 
 

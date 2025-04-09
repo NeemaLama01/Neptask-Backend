@@ -20,6 +20,8 @@ const {friendReq} = require("../controllers/friendreq");
 const {checkFriendStatus} = require("../controllers/checkfriend");
 const {adminTask} = require("../controllers/admintask");
 const {updateRejectionReason} = require("../controllers/admintask");
+const { adminRejectedTasks}= require("../controllers/adminreject");
+
 
 router.route("/create-task").post(upload.single("image"), createTask);
 router.route("/get-All-Task").get(getAllTask);
@@ -41,5 +43,6 @@ router.route("/friendReq").post(friendReq);
 router.route("/checkFriendStatus").get(checkFriendStatus);
 router.route("/admintask").get(adminTask);
 router.route("/admin_approval").put(updateRejectionReason);
+router.route("/admin_rejection").get(adminRejectedTasks);
 
 module.exports = router;

@@ -1,9 +1,9 @@
 const conn = require("../db/connection");
 const verifyEsewaPayment = async (req, res) => {
-    const { transaction_uuid, status } = req.body;
+    const { transaction_uuid} = req.body;
 
     // Validate required fields
-    if (!transaction_uuid || !status) {
+    if (!transaction_uuid) {
         return res.status(400).json({ error: "Missing transaction UUID or status" });
     }
 
@@ -27,17 +27,8 @@ const verifyEsewaPayment = async (req, res) => {
             return res.status(400).json({ error: `Transaction already processed or in a non-pending state: ${currentStatus}` });
         }
 
-        // If found and status is "Pending", update the status
-        const updateSQL = "UPDATE paymentintegration SET status = ? WHERE PaymentId = ?";
-        conn.query(updateSQL, [status, transaction_uuid], (err, result) => {
-            if (err) {
-                console.error("Database Update Error:", err);
-                return res.status(500).json({ error: "Failed to update payment status", details: err.message });
-            }
 
-            console.log("Payment status updated successfully for transaction:", transaction_uuid);
-            res.json({ message: "Payment status updated successfully" });
-        });
+
     });
 };
 

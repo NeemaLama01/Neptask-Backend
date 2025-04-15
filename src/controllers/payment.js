@@ -20,7 +20,7 @@ const Payment = (req, res) => {
     // Insert order into MySQL
     const sql = "INSERT INTO paymentintegration (PaymentId, taskposter, email, phone, task, payment) VALUES (?, ?, ?, ?, ?, 'Esewa')";
     
-    conn.query(sql, [transaction_uuid, name, email, phone, JSON.stringify(items)], (err, result) => {
+    conn.query(sql, [transaction_uuid, name, email, phone, items], (err, result) => {
         if (err) {
             console.error("Database Error:", err);
             return res.status(500).json({ error: "Database error", details: err.sqlMessage });
@@ -37,7 +37,7 @@ const Payment = (req, res) => {
             "product_code": "EPAYTEST",
             "signature": signature,
             "signed_field_names": "total_amount,transaction_uuid,product_code",
-            "success_url": `http://localhost:5174/escrow?transaction_uuid=${transaction_uuid}`,  // Pass transaction_uuid
+            "success_url": `http://localhost:5173/success?transaction_uuid=${transaction_uuid}`,  // Pass transaction_uuid
             "tax_amount": "0",
             "total_amount": total,
             "transaction_uuid": transaction_uuid

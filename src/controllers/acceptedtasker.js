@@ -10,7 +10,7 @@ const acceptedTasker = async (req, res) => {
 
     // 🔹 Step 1: Get task details from `tasklisting` using userId
     const taskQuery = `
-      SELECT id, taskTitle, taskType, requirements, taskInfo, priceRange
+      SELECT id, taskTitle, taskType, requirements, taskInfo, priceRange,image
       FROM tasklisting
       WHERE userId = ?
     `;

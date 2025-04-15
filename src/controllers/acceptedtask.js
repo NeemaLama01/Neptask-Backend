@@ -54,7 +54,8 @@ const acceptedTask = async (req, res) => {
           il.priceRange, 
           il.requirements, 
           il.taskType, 
-          il.taskInfo 
+          il.taskInfo,
+          il.image 
         FROM tasklisting il
         WHERE il.id IN (${placeholders})
       `;

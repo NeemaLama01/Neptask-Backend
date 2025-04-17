@@ -4,7 +4,7 @@ const getTaskById = async (req, res) => {
   const taskId = req.params.id; // pass jobId as a parameter in the URL
 
   try {
-    const selectQuery = "SELECT * FROM tasklisting WHERE id = ?";
+    const selectQuery = "SELECT tl.*,ti.* FROM tasklisting tl JOIN taskposter_info ti  ON tl.userID=ti.id WHERE tl.id=?";
     conn.query(selectQuery, [taskId], (err, result) => {
       if (err) {
         console.error("Error fetching job from db:", err);
@@ -15,6 +15,7 @@ const getTaskById = async (req, res) => {
         } else {
           const task = result[0];
           res.status(200).send(task);
+          console.log(task)
         }
       }
     });

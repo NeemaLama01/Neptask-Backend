@@ -35,7 +35,9 @@ con.connect((err) => {
         password VARCHAR(255) NOT NULL,
         role VARCHAR(255) NOT NULL,
         profile_image VARCHAR(255) NOT NULL,
-        token VARCHAR(255) NOT NULL
+        token VARCHAR(255) NOT NULL,
+        phone VARCHAR(255),
+        locatrion VARCHAR(255)
       )`, (err) => {
         if (err) {
           console.error('Error creating Users table:', err);

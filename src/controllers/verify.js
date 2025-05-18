@@ -2,17 +2,24 @@ require('dotenv').config();
 const nodemailer = require("nodemailer");
 const conn = require("../db/connection");
 
-const emailSender = process.env.EMAIL_SENDER;
-const emailPassword = process.env.EMAIL_PASSWORD;
-
+const emailSender = "lamanima0122@gmail.com";
+const emailPassword = "cnja dtyo mjoe hjlf";
 
 let storedToken = null;
 
-const checkToken = async (token) => {
+// Route handler to check the token
+const checkToken = async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ error: "Token is required" });
+  }
+
   if (storedToken && storedToken.toString() === token.toString()) {
-    return true;
-  } 
-  return false;
+    return res.status(200).json({ message: "Token verified successfully" });
+  } else {
+    return res.status(401).json({ error: "Invalid token" });
+  }
 };
 
 const sendTokenByEmail = async (email, token) => {
@@ -21,6 +28,9 @@ const sendTokenByEmail = async (email, token) => {
     auth: {
       user: emailSender,
       pass: emailPassword,
+    },
+    tls: {
+      rejectUnauthorized: false, // Bypass for self-signed certs in dev
     },
   });
 
@@ -34,6 +44,7 @@ const sendTokenByEmail = async (email, token) => {
   try {
     await transporter.sendMail(mailOptions);
     console.log("Email sent successfully");
+    console.log(token)
   } catch (error) {
     console.error("Error sending email:", error);
     throw error;
@@ -45,7 +56,6 @@ const verify = async (req, res) => {
 
   if (!email) {
     return res.status(400).send("Email is required");
-
   }
 
   try {
